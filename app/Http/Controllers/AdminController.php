@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
     public function LoginAdmin(){
+        if(auth()->check()){
+            return redirect()->to('home');
+        }
         return view('login');
     }
     public function PostLoginAdmin(Request $request){
