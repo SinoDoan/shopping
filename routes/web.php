@@ -47,6 +47,7 @@ Route::prefix('admin')->group(function () {
             'uses' => 'CategoryController@update'
         ]);
     });
+    //menus
     Route::prefix('menus')->group(function () {
         Route::get('/', [
             'as' => 'menus.index',
@@ -74,4 +75,19 @@ Route::prefix('admin')->group(function () {
         ]);
       
     });
+
+    //products
+    Route::prefix('product')->group(function () {
+        Route::get('/', [
+            'as' => 'product.index',
+            'uses' => 'AdminProductController@index'
+        ]); 
+        Route::get('/create', [
+            'as' => 'product.create',
+            'uses' => 'AdminProductController@create'
+        ]); 
+    });
+});
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
 });
