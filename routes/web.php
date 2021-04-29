@@ -73,7 +73,7 @@ Route::prefix('admin')->group(function () {
             'as' => 'menus.update',
             'uses' => 'MenuController@update'
         ]);
-      
+
     });
 
     //products
@@ -81,11 +81,15 @@ Route::prefix('admin')->group(function () {
         Route::get('/', [
             'as' => 'product.index',
             'uses' => 'AdminProductController@index'
-        ]); 
+        ]);
         Route::get('/create', [
             'as' => 'product.create',
             'uses' => 'AdminProductController@create'
-        ]); 
+        ]);
+        Route::post('/store', [
+            'as' => 'product.store',
+            'uses' => 'AdminProductController@store'
+        ]);
     });
 });
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {

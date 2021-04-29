@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Traits\StorageImageTrait;
 use Illuminate\Http\Request;
 use App\Components\Recusive;
 use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
 use App\Category;
+use Illuminate\Support\Facades\Storage;
 
 class AdminProductController extends Controller
 {
@@ -14,6 +17,7 @@ class AdminProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    use StorageImageTrait;
     private $category;
     public function __construct(Category $category)
     {
@@ -43,7 +47,8 @@ class AdminProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $dataUpload= $this->StorageTraitUpload($request, 'feature_image_path', 'products');
+        dd($dataUpload);
     }
     public function getCategory($parentId)
     {
