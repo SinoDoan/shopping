@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
+use App\ProductImage;
 use App\Traits\StorageImageTrait;
 use Illuminate\Http\Request;
 use App\Components\Recusive;
@@ -19,9 +21,13 @@ class AdminProductController extends Controller
      */
     use StorageImageTrait;
     private $category;
-    public function __construct(Category $category)
+    private $product;
+    private $productImage;
+    public function __construct(Category $category, Product $product, ProductImage $productImage)
     {
         $this->category = $category;
+        $this->product = $product;
+        $this->productImage = $productImage;
     }
     public function index()
     {
@@ -47,8 +53,31 @@ class AdminProductController extends Controller
      */
     public function store(Request $request)
     {
-        $dataUpload= $this->StorageTraitUpload($request, 'feature_image_path', 'products');
-        dd($dataUpload);
+        $dataProductCreate = [
+            'name' => $request->name,
+            'price' =>$request->price,
+            'content' =>$request->contents,
+            'user_id' =>auth()->id(),
+            'category_id' =>$request->category_id,
+        ];
+        $dataUploadFeatureImage= $this->StorageTraitUpload($request, 'feature_image_path', 'products');
+        if(!empty($dataUploadFeatureImage)){
+            $dataProductCreate['feature_image_name'] = $dataUploadFeatureImage['file_name'];
+            $dataProductCreate['feature_image_path'] = $dataUploadFeatureImage['file_path'];
+        };
+        $product = $this->product->create($dataProductCreate);
+
+        //insert data to product_images
+        if($request->hasFile('image_path')){
+            foreach ($request->image_path as $fileItem){
+                $dataProductImageDetail = $this->StorageTraitUploadMutiple($fileItem, 'products');
+                $this->productImage->create([
+                    'product_id' =>$product->id,
+                    'image_path'=>$dataProductImageDetail['file_path'],
+                    'image_name'=>$dataProductImageDetail['file_name'],
+                ]);
+            }
+        }
     }
     public function getCategory($parentId)
     {

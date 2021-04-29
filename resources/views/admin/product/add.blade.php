@@ -52,7 +52,7 @@
 
                             <div class="form-group">
                                 <label>Chon danh muc</label>
-                                <select class="form-control select2_init" name='parent_id'>
+                                <select class="form-control select2_init" name='category_id'>
                                     <option value="0">Chon danh muc</option>
                                     {!! $htmlOption !!}
                                 </select>
@@ -69,7 +69,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Nhap noi dung</label>
-                                <textarea class="form-control tinymce_editor_init" rows="20" name='content'></textarea>
+                                <textarea class="form-control tinymce_editor_init" rows="20" name='contents'></textarea>
                             </div>
                         </div>
                         <div class="col-md-12">
