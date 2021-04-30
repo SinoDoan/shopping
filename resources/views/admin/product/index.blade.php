@@ -4,6 +4,10 @@
     <title>Add product</title>
 @endsection
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('admins\product\index\list.css') }}"/>
+@endsection
+
 @section('content')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -31,28 +35,28 @@
                 </tr>
               </thead>
               <tbody>
-                {{-- @foreach ($menus as $menu) --}}
+                 @foreach ($products as $product)
                 <tr>
-                  <th scope="row">1</th>
-                  <td>Iphone12</td>
-                  <td>20.000.000</td>
+                  <th scope="row">{{$product->id}}</th>
+                  <td>{{$product->name}}</td>
+                  <td>{{$product->price}}</td>
                   <td>
-                      <img src="" alt="">
+                      <img class="product_image_150_100" src="{{$product->feature_image_path}}" alt="">
                   </td>
-                  <td>Phone</td>
+                  <td>{{$product->category->name}}</td>
                   <td>
                       <a href="" class="btn btn-default">Edit</a>
                       <a href="" class="btn btn-danger">Delete</a>
                   </td>
                 </tr>
-                {{-- @endforeach --}}
+                 @endforeach
               </tbody>
             </table>
           </div>
           <div class="col-md-12">
-            {{-- {{ $menus->links() }} --}}
+             {{ $products->links() }}
           </div>
-          
+
         </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->

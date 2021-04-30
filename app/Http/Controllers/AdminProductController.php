@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use App\ProductImage;
+use App\ProductTag;
+use App\Tag;
 use App\Traits\StorageImageTrait;
 use Illuminate\Http\Request;
 use App\Components\Recusive;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Category;
@@ -20,18 +24,26 @@ class AdminProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     use StorageImageTrait;
+
     private $category;
     private $product;
     private $productImage;
-    public function __construct(Category $category, Product $product, ProductImage $productImage)
+    private $tag;
+    private $productTag;
+
+    public function __construct(Category $category, Product $product, ProductImage $productImage, Tag $tag, ProductTag $productTag)
     {
         $this->category = $category;
         $this->product = $product;
         $this->productImage = $productImage;
+        $this->tag = $tag;
+        $this->productTag = $productTag;
     }
+
     public function index()
     {
-        return view('admin.product.index');
+        $products = $this->product->paginate(5);
+        return view('admin.product.index', compact('products'));
     }
 
     /**
@@ -48,37 +60,54 @@ class AdminProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $dataProductCreate = [
-            'name' => $request->name,
-            'price' =>$request->price,
-            'content' =>$request->contents,
-            'user_id' =>auth()->id(),
-            'category_id' =>$request->category_id,
-        ];
-        $dataUploadFeatureImage= $this->StorageTraitUpload($request, 'feature_image_path', 'products');
-        if(!empty($dataUploadFeatureImage)){
-            $dataProductCreate['feature_image_name'] = $dataUploadFeatureImage['file_name'];
-            $dataProductCreate['feature_image_path'] = $dataUploadFeatureImage['file_path'];
-        };
-        $product = $this->product->create($dataProductCreate);
+        try {
+            DB::beginTransaction();
+            $dataProductCreate = [
+                'name' => $request->name,
+                'price' => $request->price,
+                'content' => $request->contents,
+                'user_id' => auth()->id(),
+                'category_id' => $request->category_id,
+            ];
+            $dataUploadFeatureImage = $this->StorageTraitUpload($request, 'feature_image_path', 'products');
+            if (!empty($dataUploadFeatureImage)) {
+                $dataProductCreate['feature_image_name'] = $dataUploadFeatureImage['file_name'];
+                $dataProductCreate['feature_image_path'] = $dataUploadFeatureImage['file_path'];
+            };
+            $product = $this->product->create($dataProductCreate);
 
-        //insert data to product_images
-        if($request->hasFile('image_path')){
-            foreach ($request->image_path as $fileItem){
-                $dataProductImageDetail = $this->StorageTraitUploadMutiple($fileItem, 'products');
-                $this->productImage->create([
-                    'product_id' =>$product->id,
-                    'image_path'=>$dataProductImageDetail['file_path'],
-                    'image_name'=>$dataProductImageDetail['file_name'],
-                ]);
+            //insert data to product_images
+            if ($request->hasFile('image_path')) {
+                foreach ($request->image_path as $fileItem) {
+                    $dataProductImageDetail = $this->StorageTraitUploadMutiple($fileItem, 'products');
+                    $product->images()->create([
+                        'image_path' => $dataProductImageDetail['file_path'],
+                        'image_name' => $dataProductImageDetail['file_name'],
+                    ]);
+                }
             }
+            //insert tags product
+            foreach ($request->tags as $tagItem) {
+                $tagInstance = $this->tag->firstOrCreate([
+                    'name' => $tagItem,
+                ]);
+                $tagIds[] = $tagInstance->id;
+            }
+            $product->tags()->attach($tagIds);
+            DB::commit();
+            return redirect()->route('product.index');
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error('messages: ' . $exception->getMessage() . 'Line: ' . $exception->getLine());
         }
+
     }
+
     public function getCategory($parentId)
     {
         $data = $this->category->all();
@@ -86,10 +115,11 @@ class AdminProductController extends Controller
         $htmlOption = $recusive->CategoryRecursive($parentId);
         return $htmlOption;
     }
+
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -100,7 +130,7 @@ class AdminProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -111,8 +141,8 @@ class AdminProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -123,7 +153,7 @@ class AdminProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

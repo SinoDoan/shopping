@@ -1,7 +1,7 @@
 $(function () {
     $(".tags_select_choose").select2({
         tags: true,
-        tokenSeparators: [',', ' ']
+        tokenSeparators: [',']
     });
     $(".select2_init").select2({
         placeholder: "Chon danh muc",
@@ -22,14 +22,14 @@ $(function () {
         file_picker_callback : function(callback, value, meta) {
           let x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
           let y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
-    
+
           let cmsURL = editor_config.path_absolute + 'laravel-filemanager?editor=' + meta.fieldname;
           if (meta.filetype == 'image') {
             cmsURL = cmsURL + "&type=Images";
           } else {
             cmsURL = cmsURL + "&type=Files";
           }
-    
+
           tinyMCE.activeEditor.windowManager.openUrl({
             url : cmsURL,
             title : 'Filemanager',
@@ -43,6 +43,6 @@ $(function () {
           });
         }
       };
-    
+
       tinymce.init(editor_config);
 })
