@@ -7,7 +7,10 @@
 @section('css')
     <link rel="stylesheet" href="{{ asset('admins\product\index\list.css') }}"/>
 @endsection
-
+@section('js')
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="{{ asset('admins\product\index\list.js') }}"></script>
+@endsection
 @section('content')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -39,14 +42,16 @@
                 <tr>
                   <th scope="row">{{$product->id}}</th>
                   <td>{{$product->name}}</td>
-                  <td>{{$product->price}}</td>
+                  <td>{{number_format($product->price)}}</td>
                   <td>
                       <img class="product_image_150_100" src="{{$product->feature_image_path}}" alt="">
                   </td>
-                  <td>{{$product->category->name}}</td>
+                  <td>{{optional($product->category)->name}}</td>
                   <td>
-                      <a href="" class="btn btn-default">Edit</a>
-                      <a href="" class="btn btn-danger">Delete</a>
+                      <a href="{{route('product.edit', ['id' => $product->id])}}" class="btn btn-default">Edit</a>
+                      <a href=""
+                         data-url = "{{route('product.delete', ['id'=>$product->id])}}"
+                         class="btn btn-danger action_delete">Delete</a>
                   </td>
                 </tr>
                  @endforeach
