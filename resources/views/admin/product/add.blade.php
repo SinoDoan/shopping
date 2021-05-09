@@ -14,6 +14,17 @@
     @include('partials.content-header',['name'=>'product', 'key'=>'add'])
     <!-- /.content-header -->
         <!-- Main content -->
+        <div class="col-md-12">
+{{--            @if ($errors->any())--}}
+{{--                <div class="alert alert-danger">--}}
+{{--                    <ul>--}}
+{{--                        @foreach ($errors->all() as $error)--}}
+{{--                            <li>{{ $error }}</li>--}}
+{{--                        @endforeach--}}
+{{--                    </ul>--}}
+{{--                </div>--}}
+{{--            @endif--}}
+        </div>
         <form action="{{ route('product.store') }}" method="post" enctype="multipart/form-data">
             <div class="content">
                 <div class="container-fluid">
@@ -24,16 +35,26 @@
                             <div class="form-group">
                                 <label>Ten san pham</label>
                                 <input type="text"
-                                       class="form-control"
+                                       class="form-control @error('name') is-invalid @enderror"
                                        name='name'
+                                       value = "{{old('name')}}"
                                        placeholder="Nhap ten san pham">
+
+                                @error('name')
+                                <div class="alert alert-danger alert-css">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label>Gia san pham</label>
                                 <input type="text"
-                                       class="form-control"
+                                       class="form-control @error('price') is-invalid @enderror"
                                        name='price'
+                                       value = "{{old('price')}}"
                                        placeholder="Nhap gia san pham">
+
+                                @error('price')
+                                <div class="alert alert-danger alert-css">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label>Anh dai dien</label>
@@ -52,10 +73,13 @@
 
                             <div class="form-group">
                                 <label>Chon danh muc</label>
-                                <select class="form-control select2_init" name='category_id'>
+                                <select class="form-control select2_init @error('category_id') is-invalid @enderror" name='category_id'>
                                     <option value="0">Chon danh muc</option>
                                     {!! $htmlOption !!}
                                 </select>
+                                @error('category_id')
+                                <div class="alert alert-danger alert-css">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label>Tags</label>
@@ -69,8 +93,11 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Nhap noi dung</label>
-                                <textarea class="form-control tinymce_editor_init" rows="20" name='contents'></textarea>
+                                <textarea class="form-control tinymce_editor_init @error('contents') is-invalid @enderror " rows="20" name='contents' >{{old('contents')}}</textarea>
                             </div>
+                            @error('contents')
+                            <div class="alert alert-danger alert-css">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-primary">Submit</button>

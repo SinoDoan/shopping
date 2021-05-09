@@ -1,3 +1,8 @@
 .select2-selection__choice{
     background-color: #565050d6 !important;
 }
+.alert-css {
+    margin-top: 15px;
+    height: 40px;
+    padding: 3px;
+}
