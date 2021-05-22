@@ -39,7 +39,7 @@
             <a href="{{route('categories.index')}}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Danh mục sản phẩm 
+                Danh mục sản phẩm
                 <span class="right badge badge-danger">New</span>
               </p>
             </a>
@@ -60,6 +60,14 @@
               </p>
             </a>
           </li>
+            <li class="nav-item">
+                <a href="{{route('slider.index')}}" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>
+                        Slider
+                    </p>
+                </a>
+            </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
