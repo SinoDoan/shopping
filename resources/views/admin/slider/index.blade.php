@@ -14,7 +14,7 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    @include('partials.content-header',['name'=>'slider', 'key'=>'add'])
+    @include('partials.content-header',['name'=>'slider', 'key'=>'list'])
     <!-- /.content-header -->
 
     <!-- Main content -->
