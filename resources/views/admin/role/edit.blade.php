@@ -14,17 +14,31 @@
     </style>
 @endsection
 @section('js')
+<<<<<<< HEAD
 
     <script src="{{ asset('admins\role\add\add.js') }}"></script>
 
     <script src="{{ asset('admins\role\add\add.js') }}"></script>
 
+=======
+<<<<<<< HEAD
+    <script src="{{ asset('admins\role\add\add.js') }}"></script>
+=======
+<<<<<<< HEAD
+    <script src="{{ asset('admins\role\add\add.js') }}"></script>
+=======
+>>>>>>> 3e4e04948ecce592037fa8927b1ed7a372189b69
     <script>
         $('.checkbox_wrap').on('click', function (){
             $(this).parents('.card').find('.checkbox_children').prop('checked', $(this).prop('checked'));
         });
     </script>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 590d958e141c12cd7a582b240dcfe1a60bdaf92e
+>>>>>>> 1262dcd5ca8e6672d7b54111a1f786de3884c6ba
+>>>>>>> 3e4e04948ecce592037fa8927b1ed7a372189b69
 @endsection
 @section('content')
     <!-- Content Wrapper. Contains page content -->
@@ -59,7 +73,14 @@
                             </div>
                         </div>
                         <div class="col-md-12">
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 1262dcd5ca8e6672d7b54111a1f786de3884c6ba
+>>>>>>> 3e4e04948ecce592037fa8927b1ed7a372189b69
                             <div>
                                 <lable>
                                     <input type="checkbox" class="checkall">
@@ -68,7 +89,15 @@
                             </div>
                         </div>
                         <div class="col-md-12">
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 590d958e141c12cd7a582b240dcfe1a60bdaf92e
+>>>>>>> 1262dcd5ca8e6672d7b54111a1f786de3884c6ba
+>>>>>>> 3e4e04948ecce592037fa8927b1ed7a372189b69
                             @foreach($permissionParent as $permissionParentItem)
                                 <div class="card border-primary text-black mb-3">
                                     <div class="card-header">
