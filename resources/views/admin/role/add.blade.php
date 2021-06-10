@@ -14,7 +14,19 @@
     </style>
 @endsection
 @section('js')
+<<<<<<< HEAD
     <script src="{{ asset('admins\role\add\add.js') }}"></script>
+=======
+<<<<<<< HEAD
+    <script src="{{ asset('admins\role\add\add.js') }}"></script>
+=======
+    <script>
+        $('.checkbox_wrap').on('click', function (){
+            $(this).parents('.card').find('.checkbox_children').prop('checked', $(this).prop('checked'));
+        });
+    </script>
+>>>>>>> 590d958e141c12cd7a582b240dcfe1a60bdaf92e
+>>>>>>> 1262dcd5ca8e6672d7b54111a1f786de3884c6ba
 @endsection
 @section('content')
     <!-- Content Wrapper. Contains page content -->
@@ -50,6 +62,10 @@
                             </div>
                         </div>
                         <div class="col-md-12">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 1262dcd5ca8e6672d7b54111a1f786de3884c6ba
                             <div>
                                 <lable>
                                     <input type="checkbox" class="checkall">
@@ -58,6 +74,11 @@
                             </div>
                         </div>
                         <div class="col-md-12">
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 590d958e141c12cd7a582b240dcfe1a60bdaf92e
+>>>>>>> 1262dcd5ca8e6672d7b54111a1f786de3884c6ba
                             @foreach($permissionParent as $permissionParentItem)
                             <div class="card border-primary text-black mb-3">
                                 <div class="card-header">
