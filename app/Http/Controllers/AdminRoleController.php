@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Permission;
+use App\Role;
+use App\Traits\DeleteModelTrait;
 use Illuminate\Http\Request;
 
 class AdminRoleController extends Controller
@@ -11,9 +14,19 @@ class AdminRoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    use DeleteModelTrait;
+    private $role;
+    private $permission;
+    public function __construct(Role $role, Permission $permission)
+    {
+        $this->role= $role;
+        $this->permission = $permission;
+    }
+
     public function index()
     {
-        return view('admin.role.index');
+        $roles = $this->role->paginate(5);
+        return view('admin.role.index', compact('roles'));
     }
 
     /**
@@ -23,7 +36,8 @@ class AdminRoleController extends Controller
      */
     public function create()
     {
-        //
+        $permissionParent = $this->permission->where('parent_id', 0)->get();
+        return view('admin.role.add', compact('permissionParent'));
     }
 
     /**
@@ -34,7 +48,12 @@ class AdminRoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $role = $this->role->create([
+            'name'=>$request->name,
+            'display_name'=>$request->display_name,
+        ]);
+        $role->permissions()->attach($request->permission_id);
+        return redirect()->route('role.index');
     }
 
     /**
@@ -56,7 +75,11 @@ class AdminRoleController extends Controller
      */
     public function edit($id)
     {
-        //
+        $permissionParent = $this->permission->where('parent_id', 0)->get();
+        $roleEdit = $this->role->find($id);
+        $permissionChecked = $roleEdit->permissions;
+
+        return view('admin.role.edit', compact('roleEdit', 'permissionChecked', 'permissionParent'));
     }
 
     /**
@@ -68,7 +91,13 @@ class AdminRoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->role->find($id)->update([
+            'name'=>$request->name,
+            'display_name'=>$request->display_name,
+        ]);
+        $role = $this->role->find($id);
+        $role->permissions()->sync($request->permission_id);
+        return redirect()->route('role.index');
     }
 
     /**
@@ -77,8 +106,8 @@ class AdminRoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+        return $this->DeleteModel($id, $this->role);
     }
 }
