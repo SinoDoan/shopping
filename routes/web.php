@@ -24,11 +24,13 @@ Route::prefix('admin')->group(function () {
     Route::prefix('categories')->group(function () {
         Route::get('/', [
             'as' => 'categories.index',
-            'uses' => 'CategoryController@index'
+            'uses' => 'CategoryController@index',
+            'middleware'=> 'can:list-category'
         ]);
         Route::get('/create', [
             'as' => 'categories.create',
-            'uses' => 'CategoryController@create'
+            'uses' => 'CategoryController@create',
+            'middleware'=> 'can:add-category'
         ]);
         Route::post('/store', [
             'as' => 'categories.store',
@@ -51,7 +53,8 @@ Route::prefix('admin')->group(function () {
     Route::prefix('menus')->group(function () {
         Route::get('/', [
             'as' => 'menus.index',
-            'uses' => 'MenuController@index'
+            'uses' => 'MenuController@index',
+            'middleware'=> 'can:list-menu'
         ]);
         Route::get('/create', [
             'as' => 'menus.create',
@@ -192,6 +195,26 @@ Route::prefix('admin')->group(function () {
         Route::get('/', [
             'as' => 'role.index',
             'uses' => 'AdminRoleController@index'
+        ]);
+        Route::get('/create', [
+            'as' => 'role.create',
+            'uses' => 'AdminRoleController@create'
+        ]);
+        Route::post('/store', [
+            'as' => 'role.store',
+            'uses' => 'AdminRoleController@store'
+        ]);
+        Route::get('/edit/{id}', [
+            'as' => 'role.edit',
+            'uses' => 'AdminRoleController@edit'
+        ]);
+        Route::post('/update/{id}', [
+            'as' => 'role.update',
+            'uses' => 'AdminRoleController@update'
+        ]);
+        Route::get('/delete/{id}', [
+            'as' => 'role.delete',
+            'uses' => 'AdminRoleController@delete'
         ]);
 
     });
