@@ -24,11 +24,13 @@ Route::prefix('admin')->group(function () {
     Route::prefix('categories')->group(function () {
         Route::get('/', [
             'as' => 'categories.index',
-            'uses' => 'CategoryController@index'
+            'uses' => 'CategoryController@index',
+            'middleware'=> 'can:list-category'
         ]);
         Route::get('/create', [
             'as' => 'categories.create',
-            'uses' => 'CategoryController@create'
+            'uses' => 'CategoryController@create',
+            'middleware'=> 'can:add-category'
         ]);
         Route::post('/store', [
             'as' => 'categories.store',
@@ -51,7 +53,8 @@ Route::prefix('admin')->group(function () {
     Route::prefix('menus')->group(function () {
         Route::get('/', [
             'as' => 'menus.index',
-            'uses' => 'MenuController@index'
+            'uses' => 'MenuController@index',
+            'middleware'=> 'can:list-menu'
         ]);
         Route::get('/create', [
             'as' => 'menus.create',
@@ -102,6 +105,118 @@ Route::prefix('admin')->group(function () {
             'as' => 'product.delete',
             'uses' => 'AdminProductController@delete'
         ]);
+    });
+
+    //slider
+    Route::prefix('slider')->group(function () {
+        Route::get('/', [
+            'as' => 'slider.index',
+            'uses' => 'SliderAdminController@index'
+        ]);
+        Route::get('/create', [
+            'as' => 'slider.create',
+            'uses' => 'SliderAdminController@create'
+        ]);
+        Route::post('/store', [
+            'as' => 'slider.store',
+            'uses' => 'SliderAdminController@store'
+        ]);
+        Route::get('/edit/{id}', [
+            'as' => 'slider.edit',
+            'uses' => 'SliderAdminController@edit'
+        ]);
+        Route::post('/update/{id}', [
+            'as' => 'slider.update',
+            'uses' => 'SliderAdminController@update'
+        ]);
+        Route::get('/delete/{id}', [
+            'as' => 'slider.delete',
+            'uses' => 'SliderAdminController@delete'
+        ]);
+    });
+
+    //setting
+    Route::prefix('setting')->group(function () {
+        Route::get('/', [
+            'as' => 'setting.index',
+            'uses' => 'AdminSettingController@index'
+        ]);
+        Route::get('/create', [
+            'as' => 'setting.create',
+            'uses' => 'AdminSettingController@create'
+        ]);
+        Route::post('/store', [
+            'as' => 'setting.store',
+            'uses' => 'AdminSettingController@store'
+        ]);
+        Route::get('/edit/{id}', [
+            'as' => 'setting.edit',
+            'uses' => 'AdminSettingController@edit'
+        ]);
+        Route::post('/update/{id}', [
+            'as' => 'setting.update',
+            'uses' => 'AdminSettingController@update'
+        ]);
+        Route::get('/delete/{id}', [
+            'as' => 'setting.delete',
+            'uses' => 'AdminSettingController@delete'
+        ]);
+    });
+
+    //user controller
+    Route::prefix('user')->group(function () {
+        Route::get('/', [
+            'as' => 'user.index',
+            'uses' => 'AdminUserController@index'
+        ]);
+        Route::get('/create', [
+            'as' => 'user.create',
+            'uses' => 'AdminUserController@create'
+        ]);
+        Route::post('/store', [
+            'as' => 'user.store',
+            'uses' => 'AdminUserController@store'
+        ]);
+        Route::get('/edit/{id}', [
+            'as' => 'user.edit',
+            'uses' => 'AdminUserController@edit'
+        ]);
+        Route::post('/update/{id}', [
+            'as' => 'user.update',
+            'uses' => 'AdminUserController@update'
+        ]);
+        Route::get('/delete/{id}', [
+            'as' => 'user.delete',
+            'uses' => 'AdminUserController@delete'
+        ]);
+    });
+    //role controller
+    Route::prefix('role')->group(function () {
+        Route::get('/', [
+            'as' => 'role.index',
+            'uses' => 'AdminRoleController@index'
+        ]);
+        Route::get('/create', [
+            'as' => 'role.create',
+            'uses' => 'AdminRoleController@create'
+        ]);
+        Route::post('/store', [
+            'as' => 'role.store',
+            'uses' => 'AdminRoleController@store'
+        ]);
+        Route::get('/edit/{id}', [
+            'as' => 'role.edit',
+            'uses' => 'AdminRoleController@edit'
+        ]);
+        Route::post('/update/{id}', [
+            'as' => 'role.update',
+            'uses' => 'AdminRoleController@update'
+        ]);
+        Route::get('/delete/{id}', [
+            'as' => 'role.delete',
+            'uses' => 'AdminRoleController@delete'
+        ]);
+
     });
 });
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {

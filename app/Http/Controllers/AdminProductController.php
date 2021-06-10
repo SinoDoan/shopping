@@ -7,6 +7,7 @@ use App\Product;
 use App\ProductImage;
 use App\ProductTag;
 use App\Tag;
+use App\Traits\DeleteModelTrait;
 use App\Traits\StorageImageTrait;
 use Illuminate\Http\Request;
 use App\Components\Recusive;
@@ -25,7 +26,7 @@ class AdminProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     use StorageImageTrait;
-
+    use DeleteModelTrait;
     private $category;
     private $product;
     private $productImage;
@@ -194,21 +195,7 @@ class AdminProductController extends Controller
     }
     public function delete($id)
     {
-        try{
-            $this->product->find($id)->delete();
-            return response()->json([
-                'code' => 200,
-                'message' => 'success',
-            ], 200);
-        }
-        catch (\Exception $exception) {
-            DB::rollBack();
-            Log::error('messages: ' . $exception->getMessage() . 'Line: ' . $exception->getLine());
-            return response()->json([
-                'code' => 500,
-                'message' => 'fail',
-            ], 500);
-        }
+        return $this->DeleteModel($id, $this->product);
     }
     /**
      * Remove the specified resource from storage.
