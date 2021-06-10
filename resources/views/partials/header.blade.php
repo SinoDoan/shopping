@@ -1,30 +1,40 @@
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
-    <form class="form-inline">
+    <form class="form-inline" action="{{ route('product.search') }}" method="get">
 
         <div class="form-group mx-sm-2 mb-2">
             <label class="sr-only"> Nhập ID </label>
-            <input type="text" class="form-control" placeholder="Nhập Id">
+            <input type="text" c
+                   lass="form-control"
+                   name="product_id"
+                   value="{{request()->product_id}}"
+                   placeholder="Nhập Id">
         </div>
 
         <div class="form-group mx-sm-2 mb-2">
             <label class="sr-only"> Nhập tên sản phẩm </label>
-            <input type="text" class="form-control" placeholder="Nhập tên sản phẩm">
+            <input type="text"
+                   class="form-control"
+                   name="name"
+                   value="{{ request()->name }}"
+                   placeholder="Nhập tên sản phẩm">
         </div>
 
         <div class="form-group mx-sm-2 mb-2">
             <label class="sr-only"> Nhập tags sản phẩm </label>
-            <input type="text" class="form-control" placeholder="Nhập tags sản phẩm">
+            <input type="text"
+                   class="form-control"
+                   name="tags"
+                   value="{{ request()->tags }}"
+                   placeholder="Nhập tags sản phẩm">
         </div>
 
         <div class="form-group mx-sm-2 mb-2">
             <label class="sr-only"> Nhập tên sản phẩm </label>
-            <select class="form-control">
+            <select class="form-control" name="category_id">
                 <option value="">Chọn danh mục sản phẩm</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                {!!$htmlOptionSearchHeader!!}
             </select>
         </div>
 
