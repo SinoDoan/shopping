@@ -14,11 +14,7 @@
     </style>
 @endsection
 @section('js')
-    <script>
-        $('.checkbox_wrap').on('click', function (){
-            $(this).parents('.card').find('.checkbox_children').prop('checked', $(this).prop('checked'));
-        });
-    </script>
+    <script src="{{ asset('admins\role\add\add.js') }}"></script>
 @endsection
 @section('content')
     <!-- Content Wrapper. Contains page content -->
@@ -51,6 +47,14 @@
                                           value="{{old('display_name')}}"
                                           placeholder="Nhap mo ta"
                                           rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div>
+                                <lable>
+                                    <input type="checkbox" class="checkall">
+                                </lable>
+                                Check All
                             </div>
                         </div>
                         <div class="col-md-12">
